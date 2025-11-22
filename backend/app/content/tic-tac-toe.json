@@ -1,72 +1,20 @@
 {
     "id": "tic-tac-toe",
-    "title": "Mastering Game Logic: Build Tic Tac Toe",
-    "description": "Learn Python fundamentals by building a complete, interactive Tic Tac Toe game from scratch. We'll cover lists, loops, conditionals, and game state management.",
+    "title": "Project: Build Tic Tac Toe",
+    "difficulty": "Medium",
+    "description": "Build a command-line Tic Tac Toe game. Learn about 2D lists, loops, and winning conditions.",
     "steps": [
         {
             "id": 1,
-            "title": "The Game Board: Lists of Lists",
-            "description": "Every game needs a state. For Tic Tac Toe, we need a 3x3 grid. In Python, the best way to represent a grid is a 'List of Lists'.",
-            "notes": "### Understanding Lists of Lists\n\nIn Python, a **List** is an ordered collection of items. It is one of the most versatile data types in Python.\n```python\nfruits = [\"apple\", \"banana\", \"cherry\"]\n```\n\nA **List of Lists** (or 2D List) is simply a list where each element is *another* list. This is perfect for representing grids, matrices, or tables.\n\n#### Example: A 2x2 Grid\n```python\ngrid = [\n    [1, 2],  # Row 0\n    [3, 4]   # Row 1\n]\n```\n\nTo access the number `3`, you would use `grid[1][0]` (Row 1, Column 0).\n\n### Documentation & Resources\n- **Official Documentation**: [Python Lists](https://docs.python.org/3/tutorial/datastructures.html)\n- **Article**: [Python Lists and List Manipulation](https://realpython.com/python-lists-tuples/)\n- **Video**: [Python Lists - Everything you need to know](https://www.youtube.com/watch?v=ohCDWZgNIU0)",
-            "goal": "Create a variable named `board` that is a list containing 3 inner lists. Each inner list should contain 3 empty strings `\"\"`.",
-            "boilerplate_code": "# Create a 3x3 board\n# Hint: It's a list [...] containing 3 other lists [...]\nboard = [\n    [\"\", \"\", \"\"],\n    # ... add the other 2 rows here\n]",
-            "solution_code": "board = [\n    [\"\", \"\", \"\"],\n    [\"\", \"\", \"\"],\n    [\"\", \"\", \"\"]\n]",
+            "title": "The Game Board",
+            "description": "Implement the game logic for Tic Tac Toe.",
+            "notes": "### Project Guide\n\nTic Tac Toe is played on a 3x3 grid. Players take turns placing 'X' and 'O'.\n\n#### 1. The Board\nRepresent the board as a list of 3 lists: `[['', '', ''], ...]`.\n\n#### 2. Checking for a Win\nA player wins if they have 3 marks in a:\n- Row\n- Column\n- Diagonal\n\n#### 3. Game Loop\nLoop until someone wins or the board is full (draw).",
+            "goal": "Complete the `check_winner` and `make_move` functions.",
+            "boilerplate_code": "# --- Global State ---\nboard = [\n    [\"\", \"\", \"\"],\n    [\"\", \"\", \"\"],\n    [\"\", \"\", \"\"]\n]\ncurrent_player = \"X\"\nwinner = None\n\ndef print_board():\n    for row in board:\n        print(row)\n\ndef make_move(row, col):\n    \"\"\"Places the current player's mark at (row, col).\"\"\"\n    global current_player\n    # TODO: Check if cell is empty\n    if board[row][col] == \"\":\n        board[row][col] = current_player\n        # Switch player\n        current_player = \"O\" if current_player == \"X\" else \"X\"\n        return True\n    return False\n\ndef check_winner():\n    \"\"\"Returns 'X', 'O', or None.\"\"\"\n    # TODO: Check Rows\n    for row in board:\n        if row[0] == row[1] == row[2] and row[0] != \"\":\n            return row[0]\n            \n    # TODO: Check Columns\n    for col in range(3):\n        if board[0][col] == board[1][col] == board[2][col] and board[0][col] != \"\":\n            return board[0][col]\n            \n    # TODO: Check Diagonals\n    if board[0][0] == board[1][1] == board[2][2] and board[0][0] != \"\":\n        return board[0][0]\n    if board[0][2] == board[1][1] == board[2][0] and board[0][2] != \"\":\n        return board[0][2]\n        \n    return None\n\n# --- Simulation ---\nmoves = [(1, 1), (0, 0), (0, 1), (0, 2), (2, 1)]\nfor r, c in moves:\n    make_move(r, c)\n    w = check_winner()\n    if w:\n        winner = w\n        break\n\n# For Visualizer\ngame_state = {\n    \"board\": board,\n    \"winner\": winner\n}",
+            "solution_code": "board = [[\"\", \"\", \"\"], [\"\", \"\", \"\"], [\"\", \"\", \"\"]]\ncurrent_player = \"X\"\nwinner = None\n\ndef make_move(row, col):\n    global current_player\n    if board[row][col] == \"\":\n        board[row][col] = current_player\n        current_player = \"O\" if current_player == \"X\" else \"X\"\n        return True\n    return False\n\ndef check_winner():\n    for row in board:\n        if row[0] == row[1] == row[2] and row[0] != \"\": return row[0]\n    for col in range(3):\n        if board[0][col] == board[1][col] == board[2][col] and board[0][col] != \"\": return board[0][col]\n    if board[0][0] == board[1][1] == board[2][2] and board[0][0] != \"\": return board[0][0]\n    if board[0][2] == board[1][1] == board[2][0] and board[0][2] != \"\": return board[0][2]\n    return None\n\nmoves = [(1, 1), (0, 0), (0, 1), (0, 2), (2, 1)]\nfor r, c in moves:\n    make_move(r, c)\n    w = check_winner()\n    if w: winner = w\n\ngame_state = {\"board\": board, \"winner\": winner}",
             "hints": [
-                "You need 3 lists inside the main list.",
-                "Each inner list should look like [\"\", \"\", \"\"].",
-                "Don't forget the commas between the lists!"
-            ]
-        },
-        {
-            "id": 2,
-            "title": "Visualizing the Grid",
-            "description": "A raw list of lists is hard to read. Let's write a function to print it out nicely. This is your first step into 'Game Rendering'.\n\nWe will use a `for` loop to go through each row and print it.",
-            "notes": "### The `for` Loop\n\nA `for` loop is used for iterating over a sequence (like a list, tuple, dictionary, set, or string). It allows you to execute a block of code multiple times.\n\n#### Syntax\n```python\nfor item in sequence:\n    # do something with item\n```\n\n#### Example\n```python\nnumbers = [1, 2, 3]\nfor num in numbers:\n    print(num)\n# Output:\n# 1\n# 2\n# 3\n```\n\nIn our case, we are iterating over the `board`. Since `board` is a list of rows, each `item` in the loop will be a **row** (which is itself a list).\n\n### Documentation & Resources\n- **Official Documentation**: [Python For Loops](https://docs.python.org/3/tutorial/controlflow.html#for-statements)\n- **Article**: [Python \"for\" Loops (Definite Iteration)](https://realpython.com/python-for-loop/)\n- **Video**: [Python For Loops](https://www.youtube.com/watch?v=OnDr4J2UXSA)",
-            "goal": "Write a loop that iterates through `board` and prints each row.",
-            "boilerplate_code": "board = [\n    [\"\", \"\", \"\"],\n    [\"\", \"\", \"\"],\n    [\"\", \"\", \"\"]\n]\n\n# Write a for loop to print each row\nfor row in board:\n    # print the row",
-            "solution_code": "board = [\n    [\"\", \"\", \"\"],\n    [\"\", \"\", \"\"],\n    [\"\", \"\", \"\"]\n]\n\nfor row in board:\n    print(row)",
-            "hints": [
-                "Use `for row in board:`",
-                "Inside the loop, just call `print(row)`"
-            ]
-        },
-        {
-            "id": 3,
-            "title": "Player Input: Making a Move",
-            "description": "Let's simulate a player making a move by updating the board.",
-            "notes": "### Accessing List Elements\n\nPython lists are **0-indexed**. This means the first item is at index 0, the second at index 1, and so on.\n\n```python\nmy_list = [\"a\", \"b\", \"c\"]\nprint(my_list[0]) # Output: \"a\"\n```\n\n### Modifying Lists\nLists are **mutable**, meaning you can change their content after creation. You can change the value of a specific item by assigning to its index.\n\n```python\nmy_list[1] = \"z\"\nprint(my_list) # Output: [\"a\", \"z\", \"c\"]\n```\n\nFor a 2D list, you need two indices: `list[row_index][column_index]`. The first index selects the row (the inner list), and the second index selects the item within that row.\n\n### Documentation & Resources\n- **Official Documentation**: [More on Lists](https://docs.python.org/3/tutorial/datastructures.html#more-on-lists)\n- **Article**: [Python List Indexing and Slicing](https://realpython.com/lessons/indexing-and-slicing/)\n- **Video**: [Python Lists - Indexing and Slicing](https://www.youtube.com/watch?v=ajrtAuDg3yw)",
-            "goal": "Place an 'X' in the center of the board (Row 1, Column 1) and an 'O' in the top-left corner (Row 0, Column 0).",
-            "boilerplate_code": "board = [\n    [\"\", \"\", \"\"],\n    [\"\", \"\", \"\"],\n    [\"\", \"\", \"\"]\n]\n\n# Accessing: board[row_index][column_index]\n\n# 1. Place 'X' at the center (1, 1)\n\n# 2. Place 'O' at top-left (0, 0)\n\nprint(board)",
-            "solution_code": "board = [\n    [\"O\", \"\", \"\"],\n    [\"\", \"X\", \"\"],\n    [\"\", \"\", \"\"]\n]\n\nboard[1][1] = 'X'\nboard[0][0] = 'O'\nprint(board)",
-            "hints": [
-                "Use `board[1][1] = 'X'` for the center.",
-                "Use `board[0][0] = 'O'` for the top-left."
-            ]
-        },
-        {
-            "id": 4,
-            "title": "Win Condition: Checking Rows",
-            "description": "The core of any game is the rules. How do you win Tic Tac Toe? You get 3 in a row.",
-            "notes": "### Boolean Logic & `if` Statements\n\nWe use `if` statements to run code only when a condition is `True`. This is known as **conditional execution**.\n\n```python\nx = 10\nif x > 5:\n    print(\"x is big!\")\n```\n\n### The `and` Operator\nThe `and` operator is a logical operator that returns `True` only if **both** operands are true.\n\n```python\nif age > 18 and has_ticket:\n    print(\"Welcome!\")\n```\n\nIn Tic Tac Toe, a row wins if:\n1. Cell 0 is 'X' **AND**\n2. Cell 1 is 'X' **AND**\n3. Cell 2 is 'X'\n\n### Documentation & Resources\n- **Official Documentation**: [if Statements](https://docs.python.org/3/tutorial/controlflow.html#if-statements)\n- **Article**: [Python Conditional Statements](https://realpython.com/python-conditional-statements/)\n- **Video**: [Python If/Else Statements](https://www.youtube.com/watch?v=DZwmZ8Usvnk)",
-            "goal": "Check if the first row is a winner for 'X'. Print 'X Wins!' if it is.",
-            "boilerplate_code": "board = [\n    [\"X\", \"X\", \"X\"],\n    [\"\", \"\", \"\"],\n    [\"\", \"\", \"\"]\n]\n\n# Check the first row\nfirst_row = board[0]\n\n# Check if all elements are 'X'\nif first_row[0] == 'X' and ... # complete the condition:\n    print(\"X Wins!\")",
-            "solution_code": "board = [\n    [\"X\", \"X\", \"X\"],\n    [\"\", \"\", \"\"],\n    [\"\", \"\", \"\"]\n]\n\nif board[0][0] == 'X' and board[0][1] == 'X' and board[0][2] == 'X':\n    print(\"X Wins!\")",
-            "hints": [
-                "Check `board[0][0]`, `board[0][1]`, and `board[0][2]`.",
-                "Make sure they are all equal to 'X'."
-            ]
-        },
-        {
-            "id": 5,
-            "title": "The Game Loop (Simulation)",
-            "description": "Real games run in a loop until someone wins or it's a tie.",
-            "notes": "### Functions\n\nA function is a reusable block of code that performs a specific task. It takes **arguments** (inputs) and returns a **result**. Functions help in organizing code, making it more readable and reusable.\n\n#### Defining a Function\nUse the `def` keyword followed by the function name and parentheses.\n\n```python\ndef add(a, b):\n    return a + b\n```\n\n#### Calling a Function\nCall the function by using its name followed by parentheses containing the arguments.\n\n```python\nresult = add(5, 3)\nprint(result) # Output: 8\n```\n\nIn our game, `check_winner(board)` takes the `board` as input and returns the winner ('X', 'O', or None). This keeps our code clean and organized.\n\n### Documentation & Resources\n- **Official Documentation**: [Defining Functions](https://docs.python.org/3/tutorial/controlflow.html#defining-functions)\n- **Article**: [Defining Your Own Python Function](https://realpython.com/defining-your-own-python-function/)\n- **Video**: [Python Functions Explained](https://www.youtube.com/watch?v=9Os0o3wzS_I)",
-            "goal": "Define a function `check_winner` that checks the first row (for simplicity) and returns the winner.",
-            "boilerplate_code": "def check_winner(board):\n    # Check first row\n    if board[0][0] == board[0][1] == board[0][2] and board[0][0] != \"\":\n        return board[0][0]\n    return None\n\nboard = [\n    [\"O\", \"O\", \"O\"],\n    [\"\", \"\", \"\"],\n    [\"\", \"\", \"\"]\n]\n\nwinner = check_winner(board)\nprint(f\"Winner is: {winner}\")",
-            "solution_code": "def check_winner(board):\n    if board[0][0] == board[0][1] == board[0][2] and board[0][0] != \"\":\n        return board[0][0]\n    return None\n\nboard = [\n    [\"O\", \"O\", \"O\"],\n    [\"\", \"\", \"\"],\n    [\"\", \"\", \"\"]\n]\n\nwinner = check_winner(board)\nprint(f\"Winner is: {winner}\")",
-            "hints": [
-                "The logic is already there, just understand how the function works and run it!",
-                "Try changing the board to see if it detects 'X' as a winner too."
+                "Check rows, columns, and diagonals separately.",
+                "Don't forget to check if the cell is not empty (`!= \"\"`)."
             ]
         }
     ]

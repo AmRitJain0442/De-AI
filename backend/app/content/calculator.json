@@ -1,0 +1,21 @@
+{
+    "id": "calculator",
+    "title": "Project: Build a Calculator",
+    "difficulty": "Easy",
+    "description": "Build a functional calculator that can handle basic operations and keep a history of calculations.",
+    "steps": [
+        {
+            "id": 1,
+            "title": "The Calculator",
+            "description": "Complete the functions to make the calculator work.",
+            "notes": "### Project Guide\n\nWe are building a calculator that runs in a loop. It should support addition, subtraction, multiplication, and division.\n\n#### 1. Functions\nDefine functions for each operation: `add`, `subtract`, `multiply`, `divide`.\n\n#### 2. History\nKeep a list of past calculations strings, e.g., `[\"5 + 3 = 8\", \"10 / 2 = 5\"]`.\n\n#### 3. Main Loop\nThe loop asks for an operation and numbers, performs the calculation, and prints the result.\n\n#### 4. Error Handling\nHandle division by zero!",
+            "goal": "Implement the math functions and the main loop logic.",
+            "boilerplate_code": "# --- Global History ---\nhistory = []\nlast_result = 0\n\ndef add(x, y):\n    # TODO: Return sum\n    return x + y\n\ndef subtract(x, y):\n    # TODO: Return difference\n    return 0\n\ndef multiply(x, y):\n    # TODO: Return product\n    return 0\n\ndef divide(x, y):\n    # TODO: Return quotient. Handle division by zero!\n    if y == 0:\n        return \"Error: Division by zero\"\n    return 0\n\ndef calculate(op, x, y):\n    \"\"\"Dispatcher function\"\"\"\n    if op == '+': return add(x, y)\n    elif op == '-': return subtract(x, y)\n    elif op == '*': return multiply(x, y)\n    elif op == '/': return divide(x, y)\n    return \"Invalid Operation\"\n\n# --- Simulation ---\n# In a real app, we'd use input(). Here we simulate inputs.\ninputs = [\n    ('+', 10, 5),\n    ('-', 8, 2),\n    ('*', 4, 3),\n    ('/', 10, 0),\n    ('/', 10, 2)\n]\n\nfor op, x, y in inputs:\n    result = calculate(op, x, y)\n    entry = f\"{x} {op} {y} = {result}\"\n    history.append(entry)\n    last_result = result\n    print(entry)\n\n# For Visualizer\ngame_state = {\n    \"result\": last_result,\n    \"history\": history\n}",
+            "solution_code": "history = []\nlast_result = 0\n\ndef add(x, y): return x + y\ndef subtract(x, y): return x - y\ndef multiply(x, y): return x * y\ndef divide(x, y): return x / y if y != 0 else \"Error\"\n\ndef calculate(op, x, y):\n    if op == '+': return add(x, y)\n    elif op == '-': return subtract(x, y)\n    elif op == '*': return multiply(x, y)\n    elif op == '/': return divide(x, y)\n    return \"Invalid\"\n\ninputs = [('+', 10, 5), ('-', 8, 2), ('*', 4, 3), ('/', 10, 0), ('/', 10, 2)]\n\nfor op, x, y in inputs:\n    res = calculate(op, x, y)\n    entry = f\"{x} {op} {y} = {res}\"\n    history.append(entry)\n    last_result = res\n\ngame_state = {\"result\": last_result, \"history\": history}",
+            "hints": [
+                "Division by zero causes a crash if not handled.",
+                "Append strings to the `history` list."
+            ]
+        }
+    ]
+}
